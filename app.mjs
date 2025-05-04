@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'
 import { connectDB } from './config/dbConfig.mjs';
 import agentesRoutes from './routes/agentesRoutes.mjs';
 import path from 'path';
@@ -12,6 +13,8 @@ import expressLayouts from 'express-ejs-layouts';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
+app.use(cors());
 
 connectDB();
 
