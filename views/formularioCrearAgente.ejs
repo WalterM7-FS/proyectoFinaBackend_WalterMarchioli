@@ -1,0 +1,58 @@
+
+
+
+<body>
+    
+
+    <form action="update/crear"  method="post" autocomplete="on">
+    
+        <fieldset>
+            <legend>Ingrese los datos del Agente a incorporar al Registro de Agentes:</legend>
+            
+            <div class="p-3">
+                
+                Legajo del Agente: <input type="number" minlength="4" maxlength="10" id="legajo" name="legajo" size="20" required placeholder="Ingrese el número de legajo y un mínimo de cuatro dígitos numéricos" value="<%= agenteDB.legajo %>">
+
+            </div>
+
+               <p class="p-2">Apellido y Nombre/s del Agente: <input type="text" minlength="3" maxlength="90" id="nombre" name="nombre" size="40" required placeholder="Ingrese el apellido y nombre/s del agente" value="<%= agenteDB.nombre %>"</p>
+               <p class="p-2">Repartición del Agente: <input type="text" id="reparticion" name="reparticion" size="40" required value="<%= agenteDB.reparticion %>"></p>
+               <p class="p-2">Función del Agente: <input type="text" id="funcion" name="funcion" size="40" required value="<%= agenteDB.funcion %>"></p>
+               <p class="p-2">Categoría del Agente: <input type="number" min="1" max="99" id="categoria" name="categoria" size="40" required value="<%= agenteDB.categoria %>"> </p>
+               <p class="p-2">Nivel del agente para liquidación del Adicional Fondo Estímulo: <input type="number" min="1" max="5" id="nivelAdicionalFondoEstimulo" name="nivelAdicionalFondoEstimulo" size="40" required value="<%= agenteDB.nivelAdicionalFondoEstimulo %>"> </p>
+               <p class="p-2">Sueldos del agente:</p>
+
+                <div id="sueldos-container">
+                    <div class="sueldo-entry">
+                        <p class="p-2">Periodo: <input type="date" name="periodo[]"></p>
+                        <p class="p-2">Haber Bruto: <input type="number" min="400000" name="haberBruto[]"></p>
+                        <hr>
+                    </div>
+                </div>
+
+                <button type="button" onclick="agregarSueldo()">+ Agregar otro sueldo</button>
+               
+                <p class="p-2">Usuario que generó el alta: <input type="text" id="creador" name="creador" size="40" required placeholder="Dato requerido para agregar el agente" value="<%= agenteDB.creador %>"></p>
+
+                <input  type="submit" value="Agregar">
+    
+        </fieldset>
+    </form>
+</body>
+
+<script>
+    function agregarSueldo() {
+        const container = document.getElementById('sueldos-container');
+        const nuevoCampo = document.createElement('div');
+        nuevoCampo.classList.add('sueldo-entry');
+    
+        nuevoCampo.innerHTML = `
+            <p class="p-2">Periodo: <input type="date" name="periodo[]" required></p>
+            <p class="p-2">Haber Bruto: <input type="number" min="400000" name="haberBruto[]" required></p>
+            <button type="button" onclick="this.parentElement.remove()">Eliminar</button>
+            <hr>
+        `;
+    
+        container.appendChild(nuevoCampo);
+    }
+    </script>

@@ -1,0 +1,100 @@
+
+<body>
+    
+    <% function formatFecha(fecha) {
+        try {
+            return new Date(fecha).toISOString().split('T')[0];
+        } catch (e) {
+            return '';
+        }
+    } %>
+    
+    <form action="update/<%= agenteAModificar._id %>" method="post">
+        <fieldset>
+            <legend>Modifique los datos del agente seleccionado:</legend>
+    
+            <p class="p-2">ID: <%= agenteAModificar._id %></p>
+    
+            <p class="p-2">Legajo:
+                <input type="number" minlength="4" maxlength="10" id="legajo" name="legajo" size="40" required value="<%= agenteAModificar.legajo %>">
+            </p>
+    
+            <p class="p-2">Apellido y Nombre/s del Agente:
+                <input type="text" minlength="3" maxlength="90" id="nombre" name="nombre" size="40" required value="<%= agenteAModificar.nombre %>">
+            </p>
+    
+            <p class="p-2">Repartición del Agente:
+                <input type="text" minlength="3" maxlength="90" id="reparticion" name="reparticion" size="40" required value="<%= agenteAModificar.reparticion %>">
+            </p>
+    
+            <p class="p-2">Función del Agente:
+                <input type="text" id="funcion" name="funcion" size="40" required value="<%= agenteAModificar.funcion %>">
+            </p>
+    
+            <p class="p-2">Categoría del Agente:
+                <input type="number" min="1" max="99" id="categoria" name="categoria" size="40" required value="<%= agenteAModificar.categoria %>">
+            </p>
+    
+            <p class="p-2">Nivel del agente para liquidación del Adicional Fondo Estímulo:
+                <input type="number" min="1" max="5" id="nivelAdicionalFondoEstimulo" name="nivelAdicionalFondoEstimulo" size="40" required value="<%= agenteAModificar.nivelAdicionalFondoEstimulo %>">
+            </p>
+    
+            <p class="p-2">Sueldos del agente:</p>
+    
+            <div id="sueldo-container">
+                <% if (agenteAModificar.sueldo && agenteAModificar.sueldo.length > 0) { %>
+                    <% agenteAModificar.sueldo.forEach((s, index) => { %>
+                        <div class="sueldo-entry">
+                            <label>Periodo:</label>
+                            <input type="date" name="sueldo[<%= index %>][periodo]" value="<%= formatFecha(s.periodo) %>">
+    
+                            <label>Haber Bruto:</label>
+                            <input type="number" name="sueldo[<%= index %>][haberBruto]" value="<%= s.haberBruto ?? '' %>">
+    
+                            <button type="button" onclick="eliminarSueldo(this)">Eliminar</button>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="sueldo-entry">
+                        <label>Periodo:</label>
+                        <input type="date" name="sueldo[0][periodo]">
+                        <label>Haber Bruto:</label>
+                        <input type="number" name="sueldo[0][haberBruto]">
+                        <button type="button" onclick="eliminarSueldo(this)">Eliminar</button>
+                    </div>
+                <% } %>
+            </div>
+    
+            <button type="button" onclick="agregarSueldo()">Agregar Sueldo</button>
+    
+            <p class="p-2">Usuario que generó la modificación:
+                <input type="text" id="editor" name="editor" size="40" value="<%= agenteAModificar.editor %>" required>
+            </p>
+    
+            <input type="submit" value="Modificar">
+        </fieldset>
+    </form>
+    
+        
+</body>
+
+    <script>
+        function agregarSueldo() {
+            const container = document.getElementById('sueldo-container');
+            const index = container.querySelectorAll('.sueldo-entry').length;
+            const div = document.createElement('div');
+            div.className = 'sueldo-entry';
+            div.innerHTML = `
+                <label>Periodo:</label>
+                <input type="date" name="sueldo[${index}][periodo]">
+                <label>Haber Bruto:</label>
+                <input type="number" name="sueldo[${index}][haberBruto]">
+                <button type="button" onclick="eliminarSueldo(this)">Eliminar</button>
+            `;
+            container.appendChild(div);
+        }
+    
+        function eliminarSueldo(button) {
+            button.parentElement.remove();
+        }
+    </script>

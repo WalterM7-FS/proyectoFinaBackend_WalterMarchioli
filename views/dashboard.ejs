@@ -1,0 +1,59 @@
+<body>
+    
+
+<h1>Lista de Agentes</h1>
+  
+    <table>
+        <thead>
+            <tr>
+                <th>Legajo</th>
+                <th>Nombre del Agente</th>
+                <th>Función</th>
+                <th>Categoría</th>
+                <th>Nivel Adicional Fondo Estímulo</th>
+                <th>Usuario que generó el alta</th>
+                <th>Fecha de creación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% agentes.forEach(agente => { %>
+            <tr>
+                    <td><%= agente.legajo %></td>
+                    <td><%= agente.nombre %></td>
+                    <td><%= agente.funcion %></td>
+                    <td><%= agente.categoria %></td>
+                    <td><%= agente.nivelAdicionalFondoEstimulo %></td>
+                    <td>
+                        <ul>
+                            <% agente.sueldo.forEach(element => { %>
+                                <li><%= new Date(element.periodo).toLocaleDateString() %>: $<%= element.haberBruto %></li>
+                            <% }) %>
+                        </ul>
+                    </td>
+                    <td> <%= agente.adicionalFondoEstimulo.periodo %> , $<%= agente.adicionalFondoEstimulo.importeAFE %></td>
+                    <td><%= agente.creador %></td>
+                    <td><%= agente.createdAt %></td>
+                    <td><%= agente.edigor %></td>
+                    
+            </tr>
+            <td>
+                <div> 
+                    <form action="eliminar/<%=agente._id%>" method="post">
+                        <input type="hidden" name="_id" value="<%=agente._id%>">
+                        
+                        <button type="submit" onclick="return confirm('¿Confirma eliminar el Agente?')">
+                            Eliminar Agente
+                        </button>
+                    </form>
+                        <button type="submit" name="_id"> 
+                            <a href="editar/<%= agente._id %>" >Editar Agente</a>
+                        </button>
+                </div>
+            
+            </td>
+
+           <% }); %>
+        </tbody>
+    </table>
+
+</body>
