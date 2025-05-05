@@ -11,10 +11,11 @@ const agenteSchema = new mongoose.Schema({
         periodo: {type: Date, required: false},
         haberBruto: {type: Number, required: false}
         }],
-    adicionalFondoEstimulo: {
+    //transformación a array para guardar más de un registro de AFE
+    adicionalFondoEstimulo: [{
         periodo: {type: Date, required: false},
         importeAFE: {type: Number, required: false}
-        },
+        }],
     createdAt: {type: Date, default: Date.now },
     creador: {type: String, required: false},
     editor: {type: String, required: false}

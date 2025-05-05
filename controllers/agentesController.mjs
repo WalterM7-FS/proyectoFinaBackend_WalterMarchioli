@@ -4,15 +4,6 @@ import { validationResult } from 'express-validator';
 
 
 
-/*export async function importarAPIPaisesController(req, res) {
-    const paisesAPI = await importarAPIPaises();
-    if(paisesAPI){
-        return res.status(200).send({ mensaje: 'Paises importados desde la API correctamente' });
-    }else{
-        res.status(404).send({mensaje: 'Ocurrió un error al importar los países desde la API'});
-    }
-    
-}*/
 
 export async function obtenerTodosLosAgentesController(req, res) {
     const agentes = await obtenerTodosLosAgentes();
@@ -27,16 +18,7 @@ export async function formularioParaCrearAgentesController(req, res) {
     res.render('formularioCrearAgente', {errors: [], agenteDB, title: 'Agregar Agente'});
 }
 
-/*export async function agregarAgenteController(req, res) {
-  const errores = validationResult(req);
-        if (!errores.isEmpty()) {
-             return res.status(400).render('addPaises', { errors: errores.array(), agenteDB: req.body }); 
-        }
-    const agente = req.body; 
-    const nuevoAgente = await crearAgente(agente);
-
-    res.redirect('../agentes');*/
-    export async function agregarAgenteController(req, res) {
+export async function agregarAgenteController(req, res) {
         try {
             const {
                 legajo,
@@ -292,14 +274,7 @@ export async function modificarAgenteController(req, res) {
     }
 
 
-/*
-    try {
-            const agente = req.body;
-            const nuevoAgente = await crearAgente(agente);
-            res.status(201).json(nuevoAgente);
-        } catch (error) {
-            res.status(400).json({ error: error.message });
-        }*/
+
 
 
 
@@ -358,6 +333,26 @@ export async function modificarAgenteController(req, res) {
                 }).filter(Boolean); // Elimina los null
             }
             
+            //para convertirlo en array a adicionalFondoEstimulo
+            let adicionalFondoEstimuloFormateado = [];
+
+            if (req.body.adicionalFondoEstimulo && typeof req.body.adicionalFondoEstimulo === 'object') {
+                const afeArray = Array.isArray(req.body.adicionalFondoEstimulo)
+                    ? req.body.adicionalFondoEstimulo
+                    : Object.values(req.body.adicionalFondoEstimulo);
+            
+            adicionalFondoEstimuloFormateado = afeArray.map((item, index) => {
+                const periodo = item.periodo ? new Date(item.periodo) : null;
+                const importeAFE = item.importeAFE ? Number(item.importeAFE) : null;
+            
+                if (!isNaN(periodo?.getTime()) && !isNaN(importeAFE)) {
+                    return { periodo, importeAFE };
+                } else {
+                    console.warn(`AFE ignorado en índice ${index}: datos inválidos`, item);
+                    return null;
+                }
+            }).filter(Boolean);
+            }
             
             // Validación general de campos obligatorios
             if (
@@ -380,6 +375,7 @@ export async function modificarAgenteController(req, res) {
                 categoria: Number(categoria),
                 nivelAdicionalFondoEstimulo: Number(nivelAdicionalFondoEstimulo),
                 sueldo: sueldoFormateado,
+                adicionalFondoEstimulo: adicionalFondoEstimuloFormateado, // modificación para array
                 editor
             };
     
