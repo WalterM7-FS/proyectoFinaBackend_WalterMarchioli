@@ -35,26 +35,26 @@ router.post('/editar/update/:id',/*preprocesarDatos, registerValidationRulesEdit
 /*------------>Rutas para consumir externamente como API>-------------*/
 
 // Obtener todos los agentes en formato JSON
-router.get('/ext/agentes', authenticateToken, hasPermission('read:agentes'), obtenerTodosLosAgentesControllerExt);
+router.get('/ext/agentes', /*authenticateToken, hasPermission('read:agentes'),*/ obtenerTodosLosAgentesControllerExt);
 
 
 // Obtener un agente por ID
-router.get('/ext/agentes/:id', authenticateToken, hasPermission('read:agentes'), obtenerAgentePorIdControllerExt);
+router.get('/ext/agentes/:id', /*authenticateToken, hasPermission('read:agentes'),*/ obtenerAgentePorIdControllerExt);
 
 // Crear un nuevo agente
-router.post('/ext/agentes', authenticateToken, hasPermission('create:agentes'), agregarAgenteControllerExt);
+router.post('/ext/agentes', /*authenticateToken, hasPermission('create:agentes'),*/ agregarAgenteControllerExt);
 
 
 // Modificar un agente existente
-router.put('/ext/agentes/:id', authenticateToken, hasPermission('update:agentes'), modificarAgenteControllerExt);
+router.put('/ext/agentes/:id', /*authenticateToken, hasPermission('update:agentes'),*/ modificarAgenteControllerExt);
 
 // Eliminar un agente
-router.delete('/ext/agentes/:id', authenticateToken, hasPermission('delete:agentes'), eliminarAgenteControllerExt);
+router.delete('/ext/agentes/:id', /*authenticateToken, hasPermission('delete:agentes'),*/ eliminarAgenteControllerExt);
 
 
-//auth
+/*//auth
 router.post('/register', register);
-router.post('/login', login);
+router.post('/login', login);*/
 
 
 
