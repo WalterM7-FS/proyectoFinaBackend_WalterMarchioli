@@ -4,14 +4,13 @@ import {  obtenerTodosLosAgentesController , formularioParaCrearAgentesControlle
 import { crearAgente, modificarAgenteService, eliminarAgenteService } from '../services/agentesService.mjs';
 /*import { registerValidationRules, preprocesarDatos, registerValidationRulesEdit } from '../validation/validationRules.mjs';
 import { handleValidationErrors } from '../validation/errorMiddleware.mjs';*/
-
+import { register } from '../controllers/authController.mjs';
+import { login } from '../controllers/authController.mjs';
+import { authenticateToken, hasPermission } from '../middleware/authMiddleware.mjs'
 
 
 const router = express.Router();
 
-/*
-router.get('/importar', importarAPIPaisesController);
-*/
 
 router.get('/inicio', (req, res)=>{
     res.render('index', {title: 'Página de Inicio'})
@@ -36,21 +35,26 @@ router.post('/editar/update/:id',/*preprocesarDatos, registerValidationRulesEdit
 /*------------>Rutas para consumir externamente como API>-------------*/
 
 // Obtener todos los agentes en formato JSON
-router.get('/ext/agentes', obtenerTodosLosAgentesControllerExt);
+router.get('/ext/agentes', authenticateToken, hasPermission('read:agentes'), obtenerTodosLosAgentesControllerExt);
 
 
 // Obtener un agente por ID
-router.get('/ext/agentes/:id', obtenerAgentePorIdControllerExt);
+router.get('/ext/agentes/:id', authenticateToken, hasPermission('read:agentes'), obtenerAgentePorIdControllerExt);
 
 // Crear un nuevo agente
-router.post('/ext/agentes', agregarAgenteControllerExt);
+router.post('/ext/agentes', authenticateToken, hasPermission('create:agentes'), agregarAgenteControllerExt);
 
 
 // Modificar un agente existente
-router.put('/ext/agentes/:id', modificarAgenteControllerExt);
+router.put('/ext/agentes/:id', authenticateToken, hasPermission('update:agentes'), modificarAgenteControllerExt);
 
 // Eliminar un agente
-router.delete('/ext/agentes/:id', eliminarAgenteControllerExt);
+router.delete('/ext/agentes/:id', authenticateToken, hasPermission('delete:agentes'), eliminarAgenteControllerExt);
+
+
+//auth
+router.post('/register', register);
+router.post('/login', login);
 
 
 
