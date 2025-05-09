@@ -53,8 +53,8 @@ router.delete('/ext/agentes/:id', authenticateToken, hasPermission('delete:agent
 
 
 //auth
-router.post('ext/agentes/register', register);
-router.post('ext/agentes/login', login);
+router.post('/ext/agentes/register', register);
+router.post('/ext/agentes/login', login);
 
 
 
