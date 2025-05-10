@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Role from './Role.mjs'; // Asegurate de tener la extensión
+import Role from './Role.mjs';
 
 const userSchema = new mongoose.Schema({
     username: {

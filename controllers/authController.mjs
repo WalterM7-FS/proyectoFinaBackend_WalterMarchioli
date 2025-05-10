@@ -2,11 +2,12 @@ import authService from '../services/authService.mjs';
 
 export const register = async (req, res) => {
     try {
+        console.log("Datos recibidos en registro:", req.body);
         const result = await authService.register(req.body);
         res.status(201).json(result);
     } catch (error) {
-        console.log('Error en registro:', error);
-        res.status(400).json({ message: 'Error al registrar usuario.' });;
+        console.log('Error en registro:', error.message);
+        res.status(400).json({ message: error.message });
     }
 };
 

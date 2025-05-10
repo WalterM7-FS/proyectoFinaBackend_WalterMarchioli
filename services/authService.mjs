@@ -28,6 +28,7 @@ async register(userData) {
     const defaultRole = await Role.findOne({ name: 'user' });
 
     if(!defaultRole){
+        console.log('❌ Rol "user" no encontrado en base de datos');
         throw new Error('Rol por defecto no encontrado');
     }
 
